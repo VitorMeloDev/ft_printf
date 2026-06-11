@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vfreitass <vfreitas@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/27 10:13:28 by vfreitas          #+#    #+#             */
-/*   Updated: 2026/06/07 02:44:59 by marvin           ###   ########.fr       */
+/*   Updated: 2026/06/10 21:04:43 by vfreitass        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ char	*ft_strdup(const char *s);
 int		ft_atoi(const char *nptr);
 char	*ft_itoa(int n);
 void	ft_putnbr_fd(int n, int fd);
+void	ft_putunbr_fd(int n, unsigned int fd);
 
 #endif

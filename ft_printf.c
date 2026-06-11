@@ -17,6 +17,7 @@
 
 int ft_printf(const char *str, ...);
 void check_input(const char *str, va_list *lst);
+int vm_lonhex(unsigned long  x);
 
 int max(int num_args, ...)
 {
@@ -61,7 +62,19 @@ int main(void)
 {
     //max(4, 25.100, 10, 20, 30);
     //print("ddfd", 10, 15, 12.621, 300);
-    ft_printf("Sua nota é %c! %s", 'A', "Meus parabens!");
+
+    //unsigned int x = 10;
+    //int *ptr = &x;
+    //ft_printf("Sua %% nota é %c! %s Com isso voce tem %u", 'A', "Meus parabens!", x);
+    //printf("Sua %% nota é %c! %s Com isso voce tem %u no endereço: %p", 'A', "Meus parabens!", x, ptr);
+
+    int x = 42;
+    unsigned long n = (unsigned long)&x;
+    //printf("%lu\n", n);
+    //printf("%lx\n", (unsigned long)&x);
+
+    ft_printf("%p\n", &x);
+    printf("%p\n", &x);
 }
 
 int ft_printf(const char *str, ...)
@@ -72,12 +85,11 @@ int ft_printf(const char *str, ...)
     while (*str)
     {
         if (*str == '%')
-            check_input(++str, &args); 
+            check_input(++str, &args);
         else
             ft_putchar_fd(*str, 1);
         str++; 
     }
-    ft_putchar_fd('\n', 1);
     va_end(args);
     return (0);
 }
@@ -85,9 +97,45 @@ int ft_printf(const char *str, ...)
 void check_input(const char *str, va_list *lst)
 {
     if (*str == '%')
-        return ;
+        return ft_putchar_fd('%', 1);
     if (*str == 'c')
         return ft_putchar_fd(va_arg(*lst, int), 1);
     else if (*str == 's')
         return ft_putstr_fd(va_arg(*lst, char *), 1);
+    else if (*str == 'd')
+        return ft_putnbr_fd(va_arg(*lst, int), 1);
+    else if (*str == 'i')
+        return ft_putnbr_fd(va_arg(*lst, int), 1);
+    else if (*str == 'u')
+        return ft_putunbr_fd(va_arg(*lst, unsigned int), 1);
+    else if (*str == 'p') {
+        void *ptr = va_arg(*lst, void*);
+        return vm_lonhex((unsigned long)ptr);
+    }
+}
+
+int vm_lonhex(unsigned long  x)
+{
+    char    buffer[20];
+    int i;
+    int rest;
+    int count;
+
+    i = 0;
+    count = 0;
+    while (x > 0)
+    {
+        rest = x % 16;
+        if (rest < 10)
+            buffer[i++] = rest + '0';
+        else 
+            buffer[i++] = (rest - 10) + 'a';
+        x /= 16;
+    }
+    ft_putstr_fd("0x", 1);
+    while (--i >= 0)
+    {
+        ft_putchar_fd(buffer[i], 1);
+    }
+    return (0);
 }
