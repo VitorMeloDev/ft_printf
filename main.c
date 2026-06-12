@@ -13,6 +13,7 @@
 #include "ft_printf.h"
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 
 int max(int num_args, ...)
 {
@@ -187,5 +188,9 @@ int main(void)
 
     printf("printf    = %d\n", a);
     printf("ft_printf = %d\n", b);
+
+    /*printf("%p\n", (void *)-1);
+    ft_printf("%p\n", (void *)-1);
+    printf("0xffffffffffffffff");*/
     return (0);
 }

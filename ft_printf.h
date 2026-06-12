@@ -27,5 +27,7 @@ int		vm_print_hex(unsigned int x, int format);
 int		vm_print_ptr(va_list *lst);
 
 char	*ft_uitoa(unsigned int n);
+int		vm_fill_hex(char *buffer, unsigned long x, int format);
+void	vm_write_hex(char *buffer, int size);
 
 #endif
