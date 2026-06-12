@@ -13,7 +13,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include "libft/libft.h"
+# include "libft/libft.h"
 # include <stdarg.h>
 # include <stdlib.h>
 
@@ -26,6 +26,6 @@ int		vm_print_uint(va_list *lst);
 int		vm_print_hex(unsigned int x, int format);
 int		vm_print_ptr(va_list *lst);
 
-char	*ft_uitoa(int n);
+char	*ft_uitoa(unsigned int n);
 
 #endif

@@ -1,7 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: vfreitass <vfreitas@student.42sp.org.br    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/06/12 00:49:31 by vfreitass         #+#    #+#              #
+#    Updated: 2026/06/12 00:49:31 by vfreitass        ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = libftprintf.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+
+AR = ar
+ARFLAGS = rcs
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -12,6 +27,9 @@ SRC =	ft_printf.c \
 
 OBJ = $(SRC:.c=.o)
 
+TEST = main.c
+EXEC = test_printf
+
 all: $(NAME)
 
 $(LIBFT):
@@ -19,7 +37,13 @@ $(LIBFT):
 
 $(NAME): $(OBJ) $(LIBFT)
 	cp $(LIBFT) $(NAME)
-	ar rcs $(NAME) $(OBJ)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJ)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+test: $(NAME)
+	$(CC) $(CFLAGS) $(TEST) $(NAME) -o $(EXEC)
 
 clean:
 	rm -f $(OBJ)
@@ -27,8 +51,9 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(EXEC)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
