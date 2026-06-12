@@ -16,8 +16,7 @@
 #include <string.h>
 
 int ft_printf(const char *str, ...);
-void check_input(const char *str, va_list *lst);
-int vm_lonhex(unsigned long  x, int fd);
+int check_input(const char *str, va_list *lst);
 
 int max(int num_args, ...)
 {
@@ -60,24 +59,28 @@ void    print(char *placeholders, ...)
 
 int main(void)
 {
-    printf("%x\n", 0);
-    ft_printf("%x\n", 0);
+    //max(4, 25.100, 10, 20, 30);
+    //print("ddfd", 10, 15, 12.621, 300);
 
-    printf("%X\n", 0);
-    ft_printf("%X\n", 0);
+    //printf("%c", NULL);
+    //ft_printf("%c", NULL);
+    unsigned int x = 10;
+    int *ptr = &x;
+    ft_printf("Sua %% nota é %c! %s Com isso voce tem %u no endereço: %p\n", 'A', "Meus parabens!", x, ptr);
+    printf("Sua %% nota é %c! %s Com isso voce tem %u no endereço: %p", 'A', "Meus parabens!", x, ptr);
 
-    printf("%x\n", 15);
-    ft_printf("%x\n", 15);
+    //int x = 42;
+    //unsigned long n = (unsigned long)&x;
+    //printf("%lu\n", n);
+    //printf("%lx\n", (unsigned long)&x);
 
-    printf("%X\n", 15);
-    ft_printf("%X\n", 15);
-
-    printf("%x\n", 16);
-    ft_printf("%x\n", 16);
-
-    printf("%X\n", 16);
-    ft_printf("%X\n", 16);
-    return (0);
+    //ft_printf("%p\n", &x);
+    //printf("%p\n", &x);
+    //printf("%x\n", 48879);
+    //ft_printf("%x\n", 48879);
+    //printf("%X", 48879);
+    //ft_printf("%X\n", 48879);
+    //ft_printf("%p\n", &x);
 }
 
 int ft_printf(const char *str, ...)
@@ -97,58 +100,27 @@ int ft_printf(const char *str, ...)
     return (0);
 }
 
-void check_input(const char *str, va_list *lst)
+int check_input(const char *str, va_list *lst)
 {
     if (*str == '%')
-        return ft_putchar_fd('%', 1);
+        return (ft_putchar_fd('%', 1), 1);
     if (*str == 'c')
-        return ft_putchar_fd(va_arg(*lst, int), 1);
+        return (ft_putchar_fd(va_arg(*lst, int), 1), 1);
     else if (*str == 's')
-        return ft_putstr_fd(va_arg(*lst, char *), 1);
+        return (vm_print_string(*lst));
     else if (*str == 'd')
-        return ft_putnbr_fd(va_arg(*lst, int), 1);
+        return (vm_print_int(*lst));
     else if (*str == 'i')
-        return ft_putnbr_fd(va_arg(*lst, int), 1);
+        return (vm_print_int(*lst));
     else if (*str == 'u')
-        return ft_putunbr_fd(va_arg(*lst, unsigned int), 1);
+        return (vm_print_uint(*lst, 1));
     else if (*str == 'p') {
         void *ptr = va_arg(*lst, void*);
-        return vm_lonhex((unsigned long)ptr, 0);
+        return (vm_print_hex((unsigned long)ptr, 0));
     }
     else if (*str == 'x')
-        return vm_lonhex(va_arg(*lst, unsigned int), 1);
+        return (vm_print_hex(va_arg(*lst, unsigned int), 1));
     else if (*str == 'X')
-        return vm_lonhex(va_arg(*lst, unsigned int), 2);
-}
-
-int vm_lonhex(unsigned long  x, int format)
-{
-    char    buffer[20];
-    int i;
-    int rest;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (x > 0)
-    {
-        rest = x % 16;
-        if (rest < 10)
-            buffer[i++] = rest + '0';
-        else 
-        {   
-            if (format == 2)
-                buffer[i++] = (rest - 10) + 'A';
-            else
-                buffer[i++] = (rest - 10) + 'a';
-        }
-        x /= 16;
-    }
-    if (format == 0)
-        ft_putstr_fd("0x", 1);
-    while (--i >= 0)
-    {
-        ft_putchar_fd(buffer[i], 1);
-    }
+        return (vm_print_hex(va_arg(*lst, unsigned int), 2));
     return (0);
 }
